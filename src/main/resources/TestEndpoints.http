@@ -1,0 +1,30 @@
+###
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+  "title": "Learning Spring boot 2",
+  "description": "Incredible guide to learn Spring boot with Java",
+  "content": "Easily we can build a beautiful Rest API with Spring boot and good practice in java"
+}
+
+###
+
+GET http://localhost:8080/api/posts
+
+###
+
+GET http://localhost:8080/api/posts/16
+
+###
+PUT http://localhost:8080/api/posts/17
+Content-Type: application/json
+
+{
+  "title": "Learning Python",
+  "description": "Incredible guide to learn FastAPI with Python",
+  "content": "Easily we can build a beautiful Rest API with FastAPI and good practice in python"
+}
+
+###
+DELETE http://localhost:8080/api/posts/17
