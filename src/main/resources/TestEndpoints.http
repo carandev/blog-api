@@ -3,7 +3,7 @@ POST http://localhost:8080/api/posts
 Content-Type: application/json
 
 {
-  "title": "Learning Spring boot 2",
+  "title": "Learning Spring boot 30",
   "description": "Incredible guide to learn Spring boot with Java",
   "content": "Easily we can build a beautiful Rest API with Spring boot and good practice in java"
 }

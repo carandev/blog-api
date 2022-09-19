@@ -5,6 +5,9 @@ import com.carandev.blogapi.entity.Post;
 import com.carandev.blogapi.exception.ResourceNotFoundException;
 import com.carandev.blogapi.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +30,14 @@ public class PostService {
     return postResponse;
   }
   
-  public List<PostDTO> getAllPosts(){
-    List<Post> posts = postRepository.findAll();
+  public List<PostDTO> getAllPosts(int numberPage, int pageSize){
+    Pageable pageable = PageRequest.of(numberPage, pageSize);
+  
+    Page<Post> posts = postRepository.findAll(pageable);
     
-    return posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+    List<Post> postsList = posts.getContent();
+    
+    return postsList.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
   }
   
   public PostDTO getById(long id){
