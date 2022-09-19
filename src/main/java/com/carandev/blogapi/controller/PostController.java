@@ -1,13 +1,13 @@
 package com.carandev.blogapi.controller;
 
 import com.carandev.blogapi.dto.PostDTO;
+import com.carandev.blogapi.dto.PostResponse;
 import com.carandev.blogapi.service.PostService;
+import com.carandev.blogapi.utility.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -16,11 +16,13 @@ public class PostController {
   private PostService postService;
   
   @GetMapping
-  public ResponseEntity<List<PostDTO>> getPosts(
-    @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+  public ResponseEntity<PostResponse> getPosts(
+    @RequestParam(value = "pageNumber", defaultValue = AppConstants.DEFAULT_NUMBER_PAGE, required = false) int pageNumber,
+    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_SIZE_PAGE, required = false) int pageSize,
+    @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+    @RequestParam(value = "sortDirection", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDirection){
     
-    return new ResponseEntity<>(postService.getAllPosts(pageNumber, pageSize), HttpStatus.OK);
+    return new ResponseEntity<>(postService.getAllPosts(pageNumber, pageSize, sortBy, sortDirection), HttpStatus.OK);
   }
   
   @GetMapping("/{id}")

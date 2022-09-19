@@ -1,6 +1,7 @@
 package com.carandev.blogapi.service;
 
 import com.carandev.blogapi.dto.PostDTO;
+import com.carandev.blogapi.dto.PostResponse;
 import com.carandev.blogapi.entity.Post;
 import com.carandev.blogapi.exception.ResourceNotFoundException;
 import com.carandev.blogapi.repository.PostRepository;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,14 +31,27 @@ public class PostService {
     return postResponse;
   }
   
-  public List<PostDTO> getAllPosts(int numberPage, int pageSize){
-    Pageable pageable = PageRequest.of(numberPage, pageSize);
+  public PostResponse getAllPosts(int numberPage, int pageSize, String sortBy, String sortDirection){
+    Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
+      ? Sort.by(sortBy).ascending()
+      : Sort.by(sortBy).descending();
+    
+    Pageable pageable = PageRequest.of(numberPage, pageSize, sort);
   
     Page<Post> posts = postRepository.findAll(pageable);
     
     List<Post> postsList = posts.getContent();
+    List<PostDTO> content =  postsList.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
     
-    return postsList.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+    PostResponse postResponse = new PostResponse();
+    postResponse.setContent(content);
+    postResponse.setNumberPage(posts.getNumber());
+    postResponse.setPageSize(posts.getSize());
+    postResponse.setTotalItems(posts.getTotalElements());
+    postResponse.setTotalPages(posts.getTotalPages());
+    postResponse.setLast(posts.isLast());
+    
+    return postResponse;
   }
   
   public PostDTO getById(long id){
