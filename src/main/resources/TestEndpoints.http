@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/api/posts?sortDirection=desc
+GET http://localhost:8080/api/posts
 
 ###
 
@@ -28,3 +28,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8080/api/posts/17
+
+###
+
+POST http://localhost:8080/api/posts/14/comments
+Content-Type: application/json
+
+{
+  "name": "Excellent post",
+  "email": "carandev@mail.com",
+  "body": "This is an incredible post"
+}
