@@ -53,10 +53,11 @@ public class PostService {
     return mapToDTO(postUpdated);
   }
   
-  public HttpStatus deletePost(long id){
-    postRepository.deleteById(id);
+  public void deletePost(long id){
+    Post post = postRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
     
-    return HttpStatus.OK;
+    postRepository.delete(post);
   }
   
   private PostDTO mapToDTO(Post post){
